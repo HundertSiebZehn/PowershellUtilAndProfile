@@ -1,5 +1,7 @@
 # PowershellUtilAndProfile
 
+This is indended for use with the WindowsTerminal. Powershell alone doesn’t support emoji.
+
 ## Installation
 
 open your powershell profile
