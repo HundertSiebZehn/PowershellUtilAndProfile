@@ -1,0 +1,1 @@
+sudo choco install -y 7zip docker-desktop Git-Credential-Manager-for-Windows greenshot keepass microsoft-windows-terminal powershell-core python vivaldi.install vscode.install
