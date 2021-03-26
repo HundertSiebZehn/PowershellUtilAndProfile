@@ -10,7 +10,7 @@ function Load-Module([string] $name) {
     } else {
         Import-Module $path
     }
-    Write-Color -T "Loading: ", $name, "✅" -C White, DarkGreen
+    Write-Color -T "Loading: ", $name, " ✅" -C White, DarkGreen
 }
 
 Load-Module PSWriteColor
