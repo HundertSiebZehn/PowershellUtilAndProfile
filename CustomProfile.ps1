@@ -23,7 +23,7 @@ Load-Module posh-git
 function prompt {
     if ($(git status 2>&1 | Out-Null; $LASTEXITCODE)) {
         Write-Host "📂[" -NoNewline -ForegroundColor DarkBlue
-        Write-Host $(Get-ShortPath $pwd) -NoNewline
+        Write-Host $(Get-ShortPath $(Get-PromptPath)) -NoNewline
         Write-Host "]" -NoNewline -ForegroundColor DarkBlue
     } else {
         & $GitPromptScriptBlock
