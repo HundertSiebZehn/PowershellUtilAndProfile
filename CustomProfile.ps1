@@ -15,6 +15,8 @@ function Load-Module([string] $name) {
 Load-Module PSWriteColor
 Load-Module DockerCompletion
 Load-Module DockerComposeCompletion
+Load-Module ZLocation
+Load-Module posh-with
 Load-Module posh-git
 Load-Module ./utils.psm1
 Load-Module ./sudo.psm1
