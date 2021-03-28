@@ -31,6 +31,16 @@ function prompt {
     }
     return " "
 }
+function global:Write-WithPrompt()
+{
+    param(
+        [string]
+        $command
+    )
+
+    Write-Host -NoNewline $(prompt)
+    Write-Color -NoNewLine -T "with: ", $command, "> " -C DarkBlue, Blue, White
+}
 
 $GitPromptSettings.DefaultPromptPath = '$(Get-CustomGitPrompt)'
 $GitPromptSettings.TruncatedBranchSuffix = '…'
