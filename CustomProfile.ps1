@@ -23,9 +23,7 @@ Load-Module ./sudo.psm1
 
 function Write-Prompt {
     if ($(git status 2>&1 | Out-Null; $LASTEXITCODE)) {
-        Write-Host "📂[" -NoNewline -ForegroundColor DarkBlue
-        Write-Host $(Get-ShortPath $(Get-PromptPath)) -NoNewline
-        Write-Host "]" -NoNewline -ForegroundColor DarkBlue
+        Write-Color -NoNewline -T "📂[", $(Get-ShortPath $(Get-PromptPath)), "]" -C DarkBlue, White, DarkBlue
     } else {
         & $GitPromptScriptBlock
     }
