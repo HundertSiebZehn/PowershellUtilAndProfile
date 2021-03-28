@@ -21,7 +21,7 @@ Load-Module posh-git
 Load-Module ./utils.psm1
 Load-Module ./sudo.psm1
 
-function prompt {
+function Write-Prompt {
     if ($(git status 2>&1 | Out-Null; $LASTEXITCODE)) {
         Write-Host "📂[" -NoNewline -ForegroundColor DarkBlue
         Write-Host $(Get-ShortPath $(Get-PromptPath)) -NoNewline
@@ -29,6 +29,10 @@ function prompt {
     } else {
         & $GitPromptScriptBlock
     }
+}
+
+function prompt {
+    Write-Prompt
     return " "
 }
 function global:Write-WithPrompt()
@@ -38,7 +42,7 @@ function global:Write-WithPrompt()
         $command
     )
 
-    Write-Host -NoNewline $(prompt)
+    Write-Host -NoNewline $(Write-Prompt)
     Write-Color -NoNewLine -T "with: ", $command, "> " -C DarkBlue, Blue, White
 }
 
