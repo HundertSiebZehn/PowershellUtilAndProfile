@@ -31,6 +31,7 @@ function Write-Prompt {
 
 function prompt {
     Write-Prompt
+    try {Update-ZLocation $(Get-PromptPath)} catch {} # a workaround for ZLocation in combination with posh-git
     return " "
 }
 function global:Write-WithPrompt()
