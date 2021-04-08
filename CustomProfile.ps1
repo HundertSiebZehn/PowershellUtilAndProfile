@@ -15,8 +15,8 @@ function Load-Module([string] $name) {
 Load-Module PSWriteColor
 Load-Module DockerCompletion
 Load-Module DockerComposeCompletion
-Load-Module posh-with
 Load-Module posh-git
+Load-Module posh-with
 Load-Module ZLocation # needs to be loaded after posh-git, because of the prompt shenanigans
 Load-Module ./utils.psm1
 Load-Module ./sudo.psm1
@@ -46,3 +46,5 @@ function global:Write-WithPrompt()
 
 $GitPromptSettings.DefaultPromptPath = '$(Get-CustomGitPrompt)'
 $GitPromptSettings.TruncatedBranchSuffix = '…'
+$GitPromptSettings.FileConflictedText = '🔥'
+$GitPromptSettings.LocalWorkingStatusSymbol = '⚡'
