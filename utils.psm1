@@ -1,6 +1,6 @@
 function Get-ShortPath ([string] $path, [int] $limit = 2, [string] $ellipses = '…') {
-    [string[]] $elems = $(Convert-Path $path) -split '\\'
-    if ($limit -ge $elems.count) {
+    [string[]] $elems = $path -split '\\'
+    if ($limit -ge $elems.Count) {
         return $path
     }
     $ret = $ellipses
@@ -9,14 +9,18 @@ function Get-ShortPath ([string] $path, [int] $limit = 2, [string] $ellipses = '
     }
     return $ret;
 }
+function Format-PromptPath([string] $path) {
+    return "🗂️`e[34m[`e[0m$path`e[34m]`e[0m"
+}
 
 function Get-CustomGitPrompt {
-    $path = $($(Get-PromptPath).replace($($(git rev-parse --show-toplevel).replace("/", "\")), "…"))
-    if ($path -eq "…") {
-        return "🌳"
-    } else {
-        return $path
+    $rootPath = ($(git rev-parse --show-toplevel).replace("/", "\"))
+    $path = ($(Get-PromptPath).replace($rootPath, ""))
+    $root = $(Split-Path -Leaf $rootPath)
+    if ($path -eq "") {
+        return Format-PromptPath("🌳$root")
     }
+    return Format-PromptPath("🌳$root\" + $(Get-ShortPath($path)))
 }
 
 Export-ModuleMember -Function Get-ShortPath
