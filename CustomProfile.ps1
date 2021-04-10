@@ -21,19 +21,14 @@ Load-Module ZLocation # needs to be loaded after posh-git, because of the prompt
 Load-Module ./utils.psm1
 Load-Module ./sudo.psm1
 
-function Write-Prompt {
+function prompt {
+    try {Update-ZLocation $(Get-PromptPath)} catch {} # a workaround for ZLocation in combination with posh-git
     if ($(git status 2>&1 | Out-Null; $LASTEXITCODE)) {
-        Write-Color -NoNewline -T "📂[", $(Get-ShortPath $(Get-PromptPath)), "]" -C DarkBlue, White, DarkBlue
-    } else {
-        & $GitPromptScriptBlock
+        return "📂`e[34m[`e[0m$(Get-ShortPath $(Get-PromptPath))`e[34m]`e[0m "
     }
+    return & $GitPromptScriptBlock
 }
 
-function prompt {
-    Write-Prompt
-    try {Update-ZLocation $(Get-PromptPath)} catch {} # a workaround for ZLocation in combination with posh-git
-    return " "
-}
 function global:Write-WithPrompt()
 {
     param(
@@ -41,7 +36,7 @@ function global:Write-WithPrompt()
         $command
     )
 
-    Write-Host -NoNewline $(Write-Prompt)
+    Write-Host -NoNewline $(prompt)
     Write-Color -NoNewLine -T "with: ", $command, "> " -C DarkBlue, Blue, White
 }
 
