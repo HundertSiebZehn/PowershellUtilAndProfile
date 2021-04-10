@@ -18,9 +18,9 @@ function Get-CustomGitPrompt {
     $path = ($(Get-PromptPath).replace($rootPath, ""))
     $root = $(Split-Path -Leaf $rootPath)
     if ($path -eq "") {
-        return Format-PromptPath("🌳$root")
+        return Format-PromptPath(" $root")
     }
-    return Format-PromptPath("🌳$root\" + $(Get-ShortPath($path)))
+    return Format-PromptPath(" $root\" + $(Get-ShortPath($path)))
 }
 
 Export-ModuleMember -Function Get-ShortPath

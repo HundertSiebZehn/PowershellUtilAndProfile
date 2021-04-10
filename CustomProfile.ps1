@@ -42,5 +42,5 @@ function global:Write-WithPrompt()
 
 $GitPromptSettings.DefaultPromptPath = '$(Get-CustomGitPrompt)'
 $GitPromptSettings.TruncatedBranchSuffix = '…'
-$GitPromptSettings.FileConflictedText = '🔥'
-$GitPromptSettings.LocalWorkingStatusSymbol = '⚡'
+$GitPromptSettings.BeforeStatus.Text = "["
+$GitPromptSettings.AfterStatus.Text = "]"
