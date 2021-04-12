@@ -9,10 +9,9 @@ function Load-Module([string] $name) {
     } else {
         Import-Module $path
     }
-    Write-Color -T "Loading: ", $name, " ✅" -C White, DarkGreen
+    Write-Host "`e[0mLoading: `e[38;5;28m$name `e[0m"
 }
 
-Load-Module PSWriteColor
 Load-Module DockerCompletion
 Load-Module DockerComposeCompletion
 Load-Module posh-git
@@ -36,8 +35,7 @@ function global:Write-WithPrompt()
         $command
     )
 
-    Write-Host -NoNewline $(prompt)
-    Write-Color -NoNewLine -T "with: ", $command, "> " -C DarkBlue, Blue, White
+    Write-Host -NoNewline "$(prompt)`e[0m`e[38;5;19m `e[38;5;21m$command`e[0m> "
 }
 
 $GitPromptSettings.DefaultPromptPath = '$(Get-CustomGitPrompt)'
