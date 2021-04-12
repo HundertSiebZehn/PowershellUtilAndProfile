@@ -45,3 +45,7 @@ $GitPromptSettings.TruncatedBranchSuffix = '…'
 $GitPromptSettings.BeforeStatus.Text = "["
 $GitPromptSettings.AfterStatus.Text = "]"
 $GitPromptSettings.PathStatusSeparator.Text = ' '
+
+Set-Alias up "docker-compose up -d"
+Set-Alias logs "docker-compose logs --follow"
+Set-Alias down "docker-compose down"
