@@ -1,16 +1,28 @@
 function Get-ShortPath ([string] $path, [int] $limit = 2, [string] $ellipses = '…') {
-    [string[]] $elems = $path -split '\\'
+    [string[]] $elems = $path -split '\\' | Select-String .+ -Raw
     if ($limit -ge $elems.Count) {
-        return $path
+        return $elems -join '\'
     }
-    $ret = $ellipses
-    for ($i= - $limit; $i -lt 0; $i++) {
-        $ret += '\' + $elems[$i]
-    }
+    $ret = $ellipses + '\'
+    $ret += $elems[-$limit..-1] -join '\'
     return $ret;
 }
 function Format-PromptPath([string] $path) {
-    return "🗂️`e[34m[`e[0m$path`e[34m]`e[0m"
+    $reset = "`e[0m"
+    $fg = "`e[38;5;{0}m"
+    #$bg = "`e[48;5;{0}m"
+    return @(
+        $reset,
+        ($fg -f 220),
+        '  ',
+        ($fg -f 20),
+        '[',
+        $reset,
+        $path,
+        ($fg -f 20),
+        ']',
+        $reset
+    ) -join ''
 }
 
 function Get-CustomGitPrompt {
@@ -25,3 +37,4 @@ function Get-CustomGitPrompt {
 
 Export-ModuleMember -Function Get-ShortPath
 Export-ModuleMember -Function Get-CustomGitPrompt
+Export-ModuleMember -Function Format-PromptPath
