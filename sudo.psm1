@@ -7,11 +7,15 @@ function Invoke-AdminCommand {
     $currentPwsh = (Get-Process -Id $PID)
     if ($currentPwsh.Name.ToLower() -notin @('pwsh', 'powershell')) { throw "Powershell executable not found." }
     $pwsh = $currentPwsh.Path
-    $commands = {$args}.Invoke()
-    $commands.Insert(0, '-Command')
-    $commands.Add(';')
-    $commands.Add('pause;')
-    $commands.Add('exit')
+    $commands = 
+        @('-Command') + 
+        @($args) + 
+        @(
+            ';',
+            'pause;',
+            'exit'
+        )
     Start-Process $pwsh -Wait -Verb runAs -ArgumentList $commands
 }
+Set-Alias sudo Invoke-AdminCommand
 Export-ModuleMember -Function Invoke-AdminCommand -Alias sudo
