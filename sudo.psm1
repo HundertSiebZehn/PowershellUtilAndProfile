@@ -1,10 +1,17 @@
-function sudo {
+function Invoke-AdminCommand {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true,ValueFromRemainingArguments=$true)]
         [String[]] $args
     )
-    Start-Process pwsh -Wait -Verb runAs -ArgumentList "-Command $($args); pause; exit"
-    #Start-Process powershell -Wait -Verb runAs -ArgumentList "-Command $($args); pause; exit" for older powershell verisons
+    $currentPwsh = (Get-Process -Id $PID)
+    if ($currentPwsh.Name.ToLower() -notin @('pwsh', 'powershell')) { throw "Powershell executable not found." }
+    $pwsh = $currentPwsh.Path
+    $commands = {$args}.Invoke()
+    $commands.Insert(0, '-Command')
+    $commands.Add(';')
+    $commands.Add('pause;')
+    $commands.Add('exit')
+    Start-Process $pwsh -Wait -Verb runAs -ArgumentList $commands
 }
-Export-ModuleMember -Function sudo
+Export-ModuleMember -Function Invoke-AdminCommand -Alias sudo
