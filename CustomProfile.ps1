@@ -23,7 +23,7 @@ Load-Module ./sudo.psm1
 function prompt {
     try {Update-ZLocation $(Get-PromptPath)} catch {} # a workaround for ZLocation in combination with posh-git
     if ($(git status 2>&1 | Out-Null; $LASTEXITCODE)) {
-        return (Format-PromptPath($(Get-ShortPath $(Get-PromptPath))) + ' ')
+        return "$(Format-PromptPath($(Get-ShortPath $(Get-PromptPath)))) "
     }
     return & $GitPromptScriptBlock
 }
