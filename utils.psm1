@@ -45,5 +45,4 @@ function Get-CustomPrompt {
 
 Export-ModuleMember -Function Get-ShortPath
 Export-ModuleMember -Function Get-CustomGitPrompt
-Export-ModuleMember -Function Format-PromptPath
 Export-ModuleMember -Function Get-CustomPrompt
