@@ -45,6 +45,6 @@ $GitPromptSettings.AfterStatus.Text = "]"
 $GitPromptSettings.PathStatusSeparator.Text = ' '
 
 #"Aliases" 
-function up {docker-compose up -d}
-function logs {docker-compose logs --follow}
-function down {docker-compose down}
+function up {docker compose up -d}
+function logs {docker compose logs --follow}
+function down {docker compose down}
