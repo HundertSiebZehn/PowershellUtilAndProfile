@@ -26,6 +26,10 @@ function Format-PromptPath([string] $path) {
 }
 
 function Get-CustomGitPrompt {
+    if ($(git status 2>&1 | Out-Null; $LASTEXITCODE)) {
+        # not a git repo … return default prompt
+        return Get-CustomPrompt
+    }
     $rootPath = ($(git rev-parse --show-toplevel).replace("/", "\"))
     $path = ($(Get-PromptPath).replace($rootPath, ""))
     $root = $(Split-Path -Leaf $rootPath)
@@ -35,6 +39,11 @@ function Get-CustomGitPrompt {
     return Format-PromptPath(" $root\" + $(Get-ShortPath($path)))
 }
 
+function Get-CustomPrompt {
+    return "$(Format-PromptPath($(Get-ShortPath $(Get-PromptPath)))) "
+}
+
 Export-ModuleMember -Function Get-ShortPath
 Export-ModuleMember -Function Get-CustomGitPrompt
 Export-ModuleMember -Function Format-PromptPath
+Export-ModuleMember -Function Get-CustomPrompt
