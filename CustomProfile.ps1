@@ -3,7 +3,7 @@ function Load-Module([string] $name) {
     if (-not [System.IO.File]::Exists($path)) {
         if (-not (Get-Module -ListAvailable -Name $name)) {
             # $name is not installed
-            Install-Module $name -Force
+            Install-Module $name -Force -Scope CurrentUser
         }
         Import-Module $name
     } else {
