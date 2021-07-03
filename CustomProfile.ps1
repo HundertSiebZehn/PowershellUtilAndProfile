@@ -48,3 +48,5 @@ $GitPromptSettings.PathStatusSeparator.Text = ' '
 function up {docker compose up -d}
 function logs {docker compose logs --follow}
 function down {docker compose down}
+
+Set-Alias -Name touch -Value New-Item
