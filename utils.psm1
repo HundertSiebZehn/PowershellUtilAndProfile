@@ -44,31 +44,28 @@ function Test-Git {
         [Parameter(Mandatory=$True)]
         [String]$Path
     )
-    if ([System.IO.Path]::IsPathRooted($Path)) {
-        # absolute path
-        $Path = $(Join-Path -ErrorAction SilentlyContinue $Path "/.git" -Resolve)
-    } else {
-        $Path = $(Join-Path -ErrorAction SilentlyContinue $PWD $Path "/.git" -Resolve)
+    $saved = $LASTEXITCODE;
+    if (-not [System.IO.Path]::IsPathRooted($Path)) {
+        $Path = $(Resolve-Path -Path $Path).Path
     }
-    return [System.Boolean] $(Test-Path -ErrorAction SilentlyContinue -Path $Path)
+    $result = $(git -C $Path status 2>&1 | Out-Null; -not [System.boolean] $LASTEXITCODE)
+    $LASTEXITCODE = $saved;
+
+    return $result
 }
 
 function Get-GitRootName([string] $path) {
     if (-not $(Test-Git $path)) {
         return ""
     }
-    Write-Host $path
+
     $rootPath = $(git -C $path rev-parse --show-toplevel).replace("/", "\")
-    Write-Host $rootPath
-    $root = $(Split-Path -Leaf $rootPath)
-    Write-Host $root
+    $rootName = $(Split-Path -Leaf $rootPath)
     $parentPath = $(Join-Path -ErrorAction SilentlyContinue $rootPath ".." -Resolve)
-    Write-Host $parentPath
     if ($(Test-Git $parentPath)) {
-        Write-Host "recursive call"
-        return $(Get-GitRootName $parentPath) + " »  $root"
+        return $(Get-GitRootName $parentPath) + " »  $rootName"
     }
-    return " $root"
+    return " $rootName"
 }
 
 function Get-CustomPrompt {
