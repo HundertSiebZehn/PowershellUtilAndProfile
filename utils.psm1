@@ -60,7 +60,7 @@ function Get-GitRootName([string] $path) {
     }
 
     $rootPath = $(git -C $path rev-parse --show-toplevel).replace("/", "\")
-    $rootName = $(git remote -v | Select-String -Pattern "([^./]+)\.git" | Select-Object -First 1 | %{$_.matches.groups[1].Value})
+    $rootName = $(git -C $path remote -v | Select-String -Pattern "([^./]+)\.git" | Select-Object -First 1 | %{$_.matches.groups[1].Value})
     $parentPath = $(Join-Path -ErrorAction SilentlyContinue $rootPath ".." -Resolve)
     if ($(Test-Git $parentPath)) {
         return $(Get-GitRootName $parentPath) + " »  $rootName"
