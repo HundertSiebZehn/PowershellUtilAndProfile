@@ -65,7 +65,10 @@ function Get-GitRootName([string] $path) {
     if ($(Test-Git $parentPath)) {
         return $(Get-GitRootName $parentPath) + " »  $rootName"
     }
-    return " $rootName"
+    if (!$rootName) {
+        return $(Split-Path -Path (Get-Location) -Leaf)
+    }
+    return $(Split-Path -Path $path -Leaf)
 }
 
 function Get-CustomPrompt {
