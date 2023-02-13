@@ -60,15 +60,18 @@ function Get-GitRootName([string] $path) {
     }
 
     $rootPath = $(git -C $path rev-parse --show-toplevel).replace("/", "\")
-    $rootName = $(git -C $path remote -v | Select-String -Pattern "([^\/]+?)(?:\.git)?\s*\(\w+\)$" | Select-Object -First 1 | %{$_.matches.groups[1].Value})
-    $parentPath = $(Join-Path -ErrorAction SilentlyContinue $rootPath ".." -Resolve)
-    if ($(Test-Git $parentPath)) {
-        return $(Get-GitRootName $parentPath) + " »  $rootName"
+    $remote = $(git -C $path remote -v)
+    if ($remote) {
+        $rootName = $remote | Select-String -Pattern "([^\/]+?)(?:\.git)?\s*\(\w+\)$" | Select-Object -First 1 | %{$_.matches.groups[1].Value}
+        $parentPath = $(Join-Path -ErrorAction SilentlyContinue $rootPath ".." -Resolve)
+        if ($(Test-Git $parentPath)) {
+            return $(Get-GitRootName $parentPath) + " »  $rootName"
+        }
+        return " $rootName"
+    } else {
+        return $(Split-Path -Path $(git -C $path rev-parse --show-toplevel) -Leaf)
+        
     }
-    if (!$rootName) {
-        return $(Split-Path -Path (Get-Location) -Leaf)
-    }
-    return $(Split-Path -Path $path -Leaf)
 }
 
 function Get-CustomPrompt {
